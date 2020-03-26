@@ -1,0 +1,70 @@
+div.messages {
+  z-index: 10000;
+  background: #26272c;
+  color: white;
+  position: fixed;
+  top: 52px;
+  right: 0px;
+  box-shadow: 0px 6px 6px rgba(0,0,0,0.05), 0px 3px 0px rgba(0,0,0,0.05);
+  -webkit-box-shadow: 0 6px 6px rgba(0, 0, 0, 0.05), 0 3px 0 rgba(0, 0, 0, 0.05);
+  transition: all 600ms;
+}
+div.messages .actions{
+  font-size: 1.5em;
+  margin-bottom: 0.3em;
+  margin-top: 0.3em;
+  color: #f0ad4e;
+}
+div.messages .actions a {
+  float: right;
+  margin-right: 0.5em;
+}
+div.messages.on{
+  width: 31%;
+  right: 0%;
+  display: block;
+}
+div.messages.on div.wrapper, div.messages.on .actions{
+  display: block;
+}
+
+div.messages.off{
+  display: none;
+  right: -31%;
+  width: 0px;
+}
+div.messages.off div.wrapper, div.messages.off .actions{
+  display: none;
+}
+
+div.messages a{
+  color: white;
+  cursor: pointer;
+}
+div.messages div.wrapper{
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+div.messages div.wrapper hr{
+  margin: 0px;
+  margin-bottom: 0.3em;
+}
+div.icon{
+  margin-right: 0.5em;
+  font-size: 1.5em;
+}
+div.msgtext{
+  width: 85%;
+  text-align: justify;
+  margin-right: 1em;
+}
+div.msgline .col.action{
+  float: right;
+  font-size: 1.5em;
+}
+/*div.msgline {
+  font-size: 1.1em;
+}*/
+div.msgline .col{
+  float: left;
+}
