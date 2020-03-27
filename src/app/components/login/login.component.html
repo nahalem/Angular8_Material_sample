@@ -1,29 +1,36 @@
 <div class="row contain">
     <div class="col-lg-4 col-md-4"></div>
     <div class="col-lg-4 col-md-4 form-container">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="loginForm">
             <div formGroupName="loginFormData">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
+
                         <div class="">
                             <mat-form-field class="">
                                 <mat-label><b>Login</b></mat-label>
-                                <input matInput formControlName="login" id='login'>
-                                <mat-error *ngIf="!loginForm.get('loginFormData.login').valid && loginForm.get('loginFormData.login').touched">
-                                    <span *ngIf="loginForm.get('loginFormData.login').errors['required']">
-                                          Please select login!
-                                        </span>
+                                <input matInput formControlName="email" id='email'>
+                                <mat-error *ngIf="!loginForm.get('loginFormData.email').valid && loginForm.get('loginFormData.email').touched">
+                                    <span *ngIf="loginForm.get('loginFormData.email').errors['required']">
+                                          Please type login.
+                                    </span>
+                                    <span *ngIf="loginForm.get('loginFormData.email').errors['email']">
+                                      Please type an valid email addres.
+                                    </span>
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="">
+                        <div class="pt-3">
                             <mat-form-field class="">
                                 <mat-label><b>Password</b></mat-label>
                                 <input matInput formControlName="password" id='password'>
                                 <mat-error *ngIf="!loginForm.get('loginFormData.password').valid && loginForm.get('loginFormData.password').touched">
                                     <span *ngIf="loginForm.get('loginFormData.password').errors['required']">
-                                          Please select password!
-                                        </span>
+                                          Please write password!
+                                    </span>
+                                    <span *ngIf="loginForm.get('loginFormData.password').errors['maxlength']">
+                                      The password you have entered is too long ( max 5 ).
+                                    </span>
                                 </mat-error>
                             </mat-form-field>
                         </div>
@@ -31,13 +38,19 @@
                 </div>
                 <div class="row buttons-container">
                     <div class="">
-                        <button class="float-left btn-space" mat-raised-button id="save-btn">
+                        <button class="btn btn-default btn-block d-inline-block float-left btn-space" type="button" mat-raised-button id="save-btn" [(disabled)]="!loginForm.valid" (click)="login()">
                           Login
                         </button>
-                        <button class="float-right" mat-raised-button id="cancel-btn">
+                        <button class="btn btn-default btn-block d-inline-block float-right" type="button" mat-raised-button id="cancel-btn" (click)="resetForm()">
                           Cancel
                         </button>
                     </div>
+                </div>
+                <div class="row buttons-container">
+                  <mat-chip-list aria-label="Fish selection" *ngIf="user.email !== undefined">
+                    <mat-chip color="accent" selected>Logged user: {{user.email}}</mat-chip>
+                  </mat-chip-list>
+                    <mat-progress-spinner mode="indeterminate" class="pt-3" *ngIf="isLodaded"></mat-progress-spinner>
                 </div>
             </div>
         </form>

@@ -4,38 +4,26 @@ import { AppConfig } from 'src/app/app.config';
 import { ErrorHandlerService } from './error-handler.service';
 import { CRUDUserService } from './helpers/crud-user.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-// import { QritUser } from '../models/qrit-user';
+import { User } from '../models/user';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserService  extends CRUDUserService{
-  // protected headers = null;
-  // apiUrl: string = AppConfig.apiEndpoint;
-  // userProfile$ = new BehaviorSubject<QritUser>(new QritUser());
-  // userProfileClone$ = new BehaviorSubject<QritUser>(new QritUser());
+  protected headers = null;
+  apiUrl: string = AppConfig.apiEndpoint;
+  userProfile$ = new BehaviorSubject<User>(new User());
+  userProfileClone$ = new BehaviorSubject<User>(new User());
 
-  // constructor(
-  //   public http: HttpClient,
-  //   public errorHandlerService: ErrorHandlerService
-  //   ) {
-  //   super(http, errorHandlerService);
-  //   console.log('Service PostService Constructor start');
-  //   super.setApiUrl(this.apiUrl);
-  //   this.headers = new HttpHeaders({
-  //     'Content-Type': 'application/json'
-  //   });
+  constructor(
+    public http: HttpClient,
+    public errorHandlerService: ErrorHandlerService
+    ) {
+    super(http, errorHandlerService);
+    console.log('Service UserService Constructor start');
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    this.apiUrl = AppConfig.applicationEndpoint + '/authorization';
+    super.setApiUrl(this.apiUrl);
+  }
 
-  // }
-
-  // loginUser(user: any): Observable<QritUser>{
-  //   this.apiUrl = AppConfig.apiEndpointUserService;
-  //   return super.getByCredentials(user);
-  // };
-
-  // getCurrentUser(): Observable<QritUser>{
-  //   this.apiUrl = AppConfig.apiEndpoint + '/User/GetCurrentUser';
-
-  //   return super.getOneAfterAuth();
-  // };
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/common/models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserService } from 'src/app/common/services/user.service';
+import { AlertService } from 'src/app/common/services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +12,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   user: User;
+  isLodaded: boolean;
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private alertService: AlertService
+  ) { }
 
   ngOnInit() {
     this.user = new User();
@@ -22,18 +28,17 @@ export class LoginComponent implements OnInit {
     if (this.loginForm === undefined) {
       this.loginForm = new FormGroup({
         'loginFormData': new FormGroup({
-          'login': new FormControl('', [Validators.required, Validators.email]),
-          'password': new FormControl('', [Validators.required]),
+          'email': new FormControl('', [Validators.required, Validators.email]),
+          'password': new FormControl('', [Validators.required, Validators.maxLength(5)]),
         })
       });
     }
-    //this.validateControls();
   }
 
   setFormValues(): void {
     this.loginForm.setValue({
       'loginFormData': {
-        'login': this.user.login === undefined ? '' : this.user.login,
+        'email': this.user.email === undefined ? '' : this.user.email,
         'password': this.user.password === undefined ? '' : this.user.password,
       }
     });
@@ -46,23 +51,38 @@ export class LoginComponent implements OnInit {
   }
 
   validateControls(): void {
-    this.loginForm.get('loginFormData.login').markAsTouched();
+    this.loginForm.get('loginFormData.email').markAsTouched();
     this.loginForm.get('loginFormData.password').markAsTouched();
-    this.loginForm.get('loginFormData.login').updateValueAndValidity();
+    this.loginForm.get('loginFormData.email').updateValueAndValidity();
     this.loginForm.get('loginFormData.password').updateValueAndValidity();
   }
 
-  // TODO:
-  // Remove below method?
-  onSubmit(): void {
-    console.log('onSubmit()');
+  onSubmit(): void {}
+
+  login(): void {
+    this.user = new User();
     this.validateControls();
 
     if(!this.loginForm.valid){
       return;
     }
 
-    console.log('onSubmit() login process');
-   }
+    let userData = this.loginForm.value['loginFormData'];
+    this.isLodaded = true;
+    this.userService.loginUser(userData.email, userData.password).subscribe(res => {
+      if(res.length === 0){
+        this.alertService.warning('Login failed.');
+        this.isLodaded = false;
+        return;
+      }
 
+      this.user = res[0];
+      this.alertService.info('You are logged sucessfully');
+      this.isLodaded = false;
+    },
+    error => {
+      this.isLodaded = false;
+      this.alertService.error(error.error.Message);
+    });
+   }
 }

@@ -1,0 +1,13 @@
+{
+    "authorization": [{
+            "id": "1",
+            "email": "test@test.com",
+            "password": "Pass"
+        },
+        {
+            "id": "2",
+            "email": "test2@test2.com",
+            "password": "Pass"
+        }
+    ]
+}

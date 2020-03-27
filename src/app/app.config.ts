@@ -10,7 +10,7 @@ import { map, filter, scan } from 'rxjs/operators';
  //};
 
   export const AppConfig = {
-  applicationEndpoint: 'https://localhost:4200',
+  applicationEndpoint: 'http://localhost:3000',
   apiEndpoint: 'https://localhost:44339/api',
   apiEndpointEmergencyForDemo: 'https://localhost:44339/api', //TODO
   apiEndpointUserService: 'https://localhost:44339/api/Auth/authenticate',//TODO
