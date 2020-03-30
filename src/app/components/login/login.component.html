@@ -12,11 +12,11 @@
                                 <input matInput formControlName="email" id='email'>
                                 <mat-error *ngIf="!loginForm.get('loginFormData.email').valid && loginForm.get('loginFormData.email').touched">
                                     <span *ngIf="loginForm.get('loginFormData.email').errors['required']">
-                                          Please type login.
-                                    </span>
+                                        Please type login.
+                                  </span>
                                     <span *ngIf="loginForm.get('loginFormData.email').errors['email']">
-                                      Please type an valid email addres.
-                                    </span>
+                                    Please type an valid email addres.
+                                  </span>
                                 </mat-error>
                             </mat-form-field>
                         </div>
@@ -26,11 +26,11 @@
                                 <input matInput formControlName="password" id='password'>
                                 <mat-error *ngIf="!loginForm.get('loginFormData.password').valid && loginForm.get('loginFormData.password').touched">
                                     <span *ngIf="loginForm.get('loginFormData.password').errors['required']">
-                                          Please write password!
-                                    </span>
+                                        Please write password!
+                                  </span>
                                     <span *ngIf="loginForm.get('loginFormData.password').errors['maxlength']">
-                                      The password you have entered is too long ( max 5 ).
-                                    </span>
+                                    The password you have entered is too long ( max 5 ).
+                                  </span>
                                 </mat-error>
                             </mat-form-field>
                         </div>
@@ -38,18 +38,21 @@
                 </div>
                 <div class="row buttons-container">
                     <div class="">
-                        <button class="btn btn-default btn-block d-inline-block float-left btn-space" type="button" mat-raised-button id="save-btn" [(disabled)]="!loginForm.valid" (click)="login()">
-                          Login
-                        </button>
-                        <button class="btn btn-default btn-block d-inline-block float-right" type="button" mat-raised-button id="cancel-btn" (click)="resetForm()">
-                          Cancel
-                        </button>
+                        <button *ngIf="!isUserLogged" class="btn btn-default btn-block d-inline-block float-left btn-space" type="button" mat-raised-button id="save-btn" [(disabled)]="!loginForm.valid" (click)="login()">
+                        Login
+                      </button>
+                        <button *ngIf="isUserLogged" class="btn btn-default btn-block d-inline-block float-left btn-space" type="button" mat-raised-button id="save-btn" [(disabled)]="!loginForm.valid" (click)="logout()">
+                        Logout
+                      </button>
+                        <button *ngIf="!isUserLogged" class="btn btn-default btn-block d-inline-block float-right" type="button" mat-raised-button id="cancel-btn" (click)="resetForm()">
+                        Cancel
+                      </button>
                     </div>
                 </div>
                 <div class="row buttons-container">
-                  <mat-chip-list aria-label="Fish selection" *ngIf="user.email !== undefined">
-                    <mat-chip color="accent" selected>Logged user: {{user.email}}</mat-chip>
-                  </mat-chip-list>
+                    <mat-chip-list aria-label="Fish selection" *ngIf="user.email !== undefined">
+                        <mat-chip color="accent" selected>Logged user: {{user.email}}</mat-chip>
+                    </mat-chip-list>
                     <mat-progress-spinner mode="indeterminate" class="pt-3" *ngIf="isLodaded"></mat-progress-spinner>
                 </div>
             </div>

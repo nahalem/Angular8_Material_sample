@@ -3,6 +3,7 @@ import { User } from 'src/app/common/models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/common/services/user.service';
 import { AlertService } from 'src/app/common/services/alert.service';
+import { StorageHelper, StorageType } from 'src/app/common/helpers/storage-helper';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   user: User;
   isLodaded: boolean;
+  isUserLogged: boolean = false;
+  storageHelper: StorageHelper;
 
   constructor(
     private userService: UserService,
@@ -20,8 +23,12 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('LoginComponent  ngOnInit()');
     this.user = new User();
+    this.storageHelper = new StorageHelper(StorageType.local);
     this.initializeForm();
+    this.getLoggedUser();
+    this.setFormValues();
   }
 
   initializeForm(): void {
@@ -47,6 +54,8 @@ export class LoginComponent implements OnInit {
   resetForm(): void {
     if (this.loginForm !== undefined) {
       this.loginForm.reset();
+      this.isUserLogged = false;
+      this.isLodaded = false;
     }
   }
 
@@ -73,16 +82,42 @@ export class LoginComponent implements OnInit {
       if(res.length === 0){
         this.alertService.warning('Login failed.');
         this.isLodaded = false;
+        this.isUserLogged = false;
         return;
       }
 
       this.user = res[0];
       this.alertService.info('You are logged sucessfully');
       this.isLodaded = false;
+      this.userService.createUser(this.user);
+      this.isUserLogged = true;
+      this.storageHelper.setStorage('loggedUser', this.user);
+      this.userService.invokeEvent.emit();
     },
     error => {
       this.isLodaded = false;
       this.alertService.error(error.error.Message);
+      this.isUserLogged = false;
     });
+   }
+
+   logout(): void{
+    this.resetForm();
+    this.storageHelper.removeStorage('loggedUser');
+    this.initializeForm();
+    this.userService.clearUser();
+    this.userService.invokeEvent.emit();
+   };
+
+   getLoggedUser(): void{
+    let user = this.storageHelper.getStorage('loggedUser');
+    if(user === undefined || user === null){
+      return;
+    }
+    console.log('getLoggedUser()', user);
+    this.user = user;
+    this.isLodaded = false;
+    this.userService.createUser(this.user);
+    this.isUserLogged = true;
    }
 }
